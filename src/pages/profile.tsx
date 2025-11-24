@@ -1,10 +1,19 @@
-import { Settings, Heart, Clock, ChevronRight, LogOut, Moon, Sun, User as UserIcon, Bell, Shield, HelpCircle, Info } from 'lucide-react';
+import { Settings, Heart, Clock, ChevronRight, LogOut, Moon, Sun, User as UserIcon, Bell, Shield, HelpCircle, Info, LucideIcon } from 'lucide-react';
 import { useUser, useClerk } from '@clerk/clerk-react';
 import { BottomNav } from '@/components/layout/bottom-nav';
 import { useTheme } from '@/components/theme-provider';
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Movie } from '@/lib/api';
+
+interface SettingItem {
+    icon: LucideIcon;
+    label: string;
+    color: string;
+    action?: () => void;
+    showToggle?: boolean;
+    badge?: string;
+}
 
 export default function Profile() {
     const { user } = useUser();
@@ -38,7 +47,7 @@ export default function Profile() {
         },
     ];
 
-    const settingsSections = [
+    const settingsSections: { title: string; items: SettingItem[] }[] = [
         {
             title: 'Preferences',
             items: [

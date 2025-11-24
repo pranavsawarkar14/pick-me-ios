@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, Heart, Star, Calendar, Zap, TrendingUp, Award, Film, Shuffle } from 'lucide-react';
+import { Sparkles, Star, Calendar, Zap, TrendingUp, Award, Film, Shuffle } from 'lucide-react';
 import { BottomNav } from '@/components/layout/bottom-nav';
 import { MovieRow } from '@/components/ui/movie-row';
 import {
@@ -150,8 +150,8 @@ export default function Suggestions() {
                     <button
                         onClick={() => setActiveTab('moods')}
                         className={`flex-1 py-2.5 rounded-lg font-medium transition-all ${activeTab === 'moods'
-                                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                                : 'text-muted-foreground hover:text-foreground'
+                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                            : 'text-muted-foreground hover:text-foreground'
                             }`}
                     >
                         <Zap className="inline h-4 w-4 mr-2" />
@@ -160,8 +160,8 @@ export default function Suggestions() {
                     <button
                         onClick={() => setActiveTab('advanced')}
                         className={`flex-1 py-2.5 rounded-lg font-medium transition-all ${activeTab === 'advanced'
-                                ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                                : 'text-muted-foreground hover:text-foreground'
+                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                            : 'text-muted-foreground hover:text-foreground'
                             }`}
                     >
                         <TrendingUp className="inline h-4 w-4 mr-2" />
@@ -189,8 +189,8 @@ export default function Suggestions() {
                                     transition={{ delay: index * 0.05 }}
                                     onClick={() => selectMood(mood.id)}
                                     className={`relative overflow-hidden rounded-2xl p-5 transition-all ${selectedMood === mood.id
-                                            ? 'scale-105 shadow-2xl'
-                                            : 'hover:scale-102'
+                                        ? 'scale-105 shadow-2xl'
+                                        : 'hover:scale-102'
                                         }`}
                                 >
                                     <div className={`absolute inset-0 bg-gradient-to-br ${mood.gradient} ${selectedMood === mood.id ? 'opacity-100' : 'opacity-70'
@@ -247,8 +247,8 @@ export default function Suggestions() {
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => toggleGenre(genre.id)}
                                         className={`relative overflow-hidden rounded-xl p-4 transition-all ${preferences.favoriteGenres.includes(genre.id)
-                                                ? 'shadow-xl'
-                                                : 'bg-[#1a1d29] border border-white/10'
+                                            ? 'shadow-xl'
+                                            : 'bg-[#1a1d29] border border-white/10'
                                             }`}
                                     >
                                         {preferences.favoriteGenres.includes(genre.id) && (
