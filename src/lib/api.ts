@@ -8,6 +8,11 @@ export const api = axios.create({
     params: {
         api_key: API_KEY,
     },
+    timeout: 10000, // 10 second timeout for Safari
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    },
 });
 
 export interface Movie {
@@ -43,21 +48,37 @@ export interface Provider {
 }
 
 export const getTrendingMovies = async (): Promise<Movie[]> => {
-    // Fetch trending, but we'll also add a specific discover call for Indian content
-    const response = await api.get('/trending/movie/week');
-    return response.data.results;
+    try {
+        const response = await api.get('/trending/movie/week');
+        return response.data.results || [];
+    } catch (error) {
+        console.error('Error fetching trending movies:', error);
+        // Fallback to popular movies if trending fails
+        try {
+            const fallback = await api.get('/movie/popular');
+            return fallback.data.results || [];
+        } catch (fallbackError) {
+            console.error('Fallback also failed:', fallbackError);
+            return [];
+        }
+    }
 };
 
 export const getIndianMovies = async (): Promise<Movie[]> => {
-    const response = await api.get('/discover/movie', {
-        params: {
-            region: 'IN',
-            with_original_language: 'hi|te|ta|ml|kn',
-            sort_by: 'popularity.desc',
-            'vote_count.gte': 100
-        }
-    });
-    return response.data.results;
+    try {
+        const response = await api.get('/discover/movie', {
+            params: {
+                region: 'IN',
+                with_original_language: 'hi|te|ta|ml|kn',
+                sort_by: 'popularity.desc',
+                'vote_count.gte': 100
+            }
+        });
+        return response.data.results || [];
+    } catch (error) {
+        console.error('Error fetching Indian movies:', error);
+        return [];
+    }
 };
 
 export const getPersonDetails = async (id: number) => {

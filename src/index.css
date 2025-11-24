@@ -73,6 +73,28 @@
 
   body {
     @apply bg-background text-foreground;
+    /* iOS Safari fixes */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Prevent iOS zoom on input focus */
+    touch-action: manipulation;
+  }
+
+  /* iOS Safari viewport fix */
+  html {
+    height: -webkit-fill-available;
+  }
+
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  /* Fix for iOS Safari input zoom */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
   }
 }
 
@@ -87,4 +109,11 @@
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+}
+
+/* iOS Safari safe area support */
+@supports (padding: max(0px)) {
+  .pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+  }
 }

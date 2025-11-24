@@ -12,6 +12,13 @@ import Watchlist from '@/pages/watchlist';
 import Suggestions from '@/pages/suggestions';
 import Profile from '@/pages/profile';
 
+// Extend Window interface for Clerk
+declare global {
+    interface Window {
+        Clerk?: any;
+    }
+}
+
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 if (!CLERK_PUBLISHABLE_KEY) {
@@ -29,6 +36,7 @@ const INTRO_ITEMS = [
 
 function AppContent() {
     const [showIntro, setShowIntro] = useState(true);
+    const [isClerkLoaded, setIsClerkLoaded] = useState(false);
     const location = useLocation();
 
     useEffect(() => {
@@ -36,6 +44,27 @@ function AppContent() {
             setShowIntro(false);
         }, 4000);
         return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        // Ensure Clerk is loaded (important for iOS)
+        const checkClerk = setInterval(() => {
+            if (window.Clerk) {
+                setIsClerkLoaded(true);
+                clearInterval(checkClerk);
+            }
+        }, 100);
+
+        // Timeout after 5 seconds
+        const timeout = setTimeout(() => {
+            setIsClerkLoaded(true);
+            clearInterval(checkClerk);
+        }, 5000);
+
+        return () => {
+            clearInterval(checkClerk);
+            clearTimeout(timeout);
+        };
     }, []);
 
     return (
@@ -58,6 +87,13 @@ function AppContent() {
                             PICK ME
                         </motion.h1>
                     </motion.div>
+                ) : !isClerkLoaded ? (
+                    <div className="flex h-screen items-center justify-center bg-background">
+                        <div className="text-center">
+                            <div className="h-12 w-12 mx-auto mb-4 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+                            <p className="text-muted-foreground">Loading...</p>
+                        </div>
+                    </div>
                 ) : (
                     <motion.div
                         key="content"
